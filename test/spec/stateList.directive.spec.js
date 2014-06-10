@@ -5,7 +5,7 @@ describe( "brStateList directive", function() {
 	var $ = angular.element;
 	var expect = chai.expect;
 	
-	beforeEach( module( "brazilfields" ) );
+	beforeEach( module( "brazilfields.states" ) );
 	beforeEach( inject(function( $injector ) {
 		select = $( "<select br-state-list></select>" );
 		

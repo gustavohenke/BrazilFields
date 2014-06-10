@@ -4,7 +4,7 @@ describe( "brValidate Service", function() {
 	var brValidate;
 	var expect = chai.expect;
 	
-	beforeEach( module( "brazilfields" ) );
+	beforeEach( module( "brazilfields.utils" ) );
 	beforeEach( inject(function( $injector ) {
 		brValidate = $injector.get( "brValidate" );
 	}));

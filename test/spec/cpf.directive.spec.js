@@ -4,7 +4,7 @@ describe( "brCpf Directive", function() {
 	var scope, input, ngModel;
 	var expect = chai.expect;
 	
-	beforeEach( module( "brazilfields" ) );
+	beforeEach( module( "brazilfields.cpfCnpj" ) );
 	beforeEach( inject(function( $rootScope, $compile ) {
 		scope = $rootScope;
 		input = $compile( "<input type='text' ng-model='foo' br-cpf>" )( scope );
