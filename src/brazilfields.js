@@ -126,9 +126,15 @@
 			definition.link = function( scope, element, attrs, ngModel ) {
 				var validator = function( value ) {
 					var valid;
-					var mustValidate = scope.$eval( attrs[ name ] );
+					var attr = element.attr( attrs.$attr[ name ] );
+					
+					// Deve validar quando o atributo não tem valor ou o seu valor (como uma
+					// expressão do Angular) retorna um valor truthy
+					var mustValidate = ( attr || "" ).trim() ? scope.$eval( attr ) : true;
 					
 					if ( !mustValidate ) {
+						// Remove a chave de validação atual, se não é pra validar
+						delete ngModel.$error[ type ];
 						return value;
 					}
 					
@@ -137,6 +143,11 @@
 					
 					return valid ? value : undefined;
 				};
+				
+				// Sem ng-model, não faz nada.
+				if ( !ngModel ) {
+					return;
+				}
 				
 				// Adiciona as funções de validação dos 2 lados
 				ngModel.$parsers.push( validator );
