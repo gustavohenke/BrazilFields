@@ -1,0 +1,9 @@
+options:
+  spawn: false
+
+core:
+  files:
+    - "src/**/*"
+    - "test/**/*"
+  tasks:
+    - test
