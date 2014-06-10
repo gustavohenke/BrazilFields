@@ -18,5 +18,8 @@
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/gustavohenke/BrazilFields.git"
+	},
+	"scripts": {
+		"test": "grunt"
 	}
 }
