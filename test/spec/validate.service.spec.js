@@ -10,6 +10,13 @@ describe( "brValidate Service", function() {
 	}));
 	
 	describe( "cpf", function() {
+		// Tabela para o CPF 206.206.148-03:
+		//  2 0  6  2 0  6 1  4  8     2  0  6  2 0  6 1  4  8 0
+		// 10 9  8  7 6  5 4  3  2    11 10  9  8 7  6 5  4  3 2
+		// -----------------------    --------------------------
+		// 20 0 48 14 0 30 4 12 16    22  0 54 16 0 36 5 16 24 0
+		//   144 % 11 = 1, então 0      173 % 11 = 8, 11 - 8 = 3
+		
 		it( "deve validar CPFs válidos", function() {
 			expect( brValidate.cpf( "20620614803" ) ).to.be.ok;
 		});
