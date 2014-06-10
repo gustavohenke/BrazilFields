@@ -1,0 +1,315 @@
+!function( ng ) {
+	"use strict";
+	
+	var br = ng.module( "brazilfields", [
+		"brazilfields.utils",
+		"brazilfields.cpfCnpj"
+	]);
+	
+}( angular );
+!function( ng ) {
+	"use strict";
+	
+	var module = ng.module( "brazilfields.cpfCnpj", [
+		"brazilfields.utils"
+	]);
+	
+	// Dinamicamente gera as diretivas
+	[ "cpf", "cnpj" ].forEach(function( type ) {
+		var name = "br" + type[ 0 ].toUpperCase() + type.substr( 1 );
+		
+		module.directive( name, [ "brValidate", function( brValidate ) {
+			var definition = {};
+			
+			definition.require = "?ngModel";
+			definition.link = function( scope, element, attrs, ngModel ) {
+				var validator = function( value ) {
+					var valid;
+					var attr = element.attr( attrs.$attr[ name ] );
+					
+					// Deve validar quando o atributo não tem valor ou o seu valor (como uma
+					// expressão do Angular) retorna um valor truthy
+					var mustValidate = ( attr || "" ).trim() ? scope.$eval( attr ) : true;
+					
+					if ( !mustValidate ) {
+						// Remove a chave de validação atual, se não é pra validar
+						delete ngModel.$error[ type ];
+						return value;
+					}
+					
+					valid = brValidate[ type ]( value );
+					ngModel.$setValidity( type, valid );
+					
+					return valid ? value : undefined;
+				};
+				
+				// Sem ng-model, não faz nada.
+				if ( !ngModel ) {
+					return;
+				}
+				
+				// Adiciona as funções de validação dos 2 lados
+				ngModel.$parsers.push( validator );
+				ngModel.$formatters.push( validator );
+			};
+			
+			return definition;
+		}]);
+	});
+	
+}( angular );
+!function( ng ) {
+	"use strict";
+	
+	var module = ng.module( "brazilfields.utils", [] );
+
+	module.constant( "brStates", [{
+		id: "AC",
+		name: "Acre",
+		capital: "Rio Branco",
+		region: "N"
+	}, {
+		id: "AL",
+		name: "Alagoas",
+		capital: "Maceió",
+		region: "NE"
+	}, {
+		id: "AM",
+		name: "Amazonas",
+		capital: "Manaus",
+		region: "N"
+	}, {
+		id: "AP",
+		name: "Amapá",
+		capital: "Macapá",
+		region: "N"
+	}, {
+		id: "BA",
+		name: "Bahia",
+		capital: "Salvador",
+		region: "NE"
+	}, {
+		id: "CE",
+		name: "Ceará",
+		capital: "Fortaleza",
+		region: "NE"
+	}, {
+		id: "DF",
+		name: "Distrito Federal",
+		capital: "Brasília",
+		region: "CO"
+	}, {
+		id: "ES",
+		name: "Espírito Santo",
+		capital: "Vitória",
+		region: "SE"
+	}, {
+		id: "GO",
+		name: "Goiás",
+		capital: "Goiânia",
+		region: "CO"
+	}, {
+		id: "MA",
+		name: "Maranhão",
+		capital: "São Luís",
+		region: "NE"
+	}, {
+		id: "MG",
+		name: "Minas Gerais",
+		capital: "Belo Horizonte",
+		region: "SE"
+	}, {
+		id: "MS",
+		name: "Mato Grosso do Sul",
+		capital: "Campo Grande",
+		region: "CO"
+	}, {
+		id: "MT",
+		name: "Mato Grosso",
+		capital: "Cuiabá",
+		region: "CO"
+	}, {
+		id: "PA",
+		name: "Pará",
+		capital: "Belém",
+		region: "N"
+	}, {
+		id: "PB",
+		name: "Paraíba",
+		capital: "João Pessoa",
+		region: "NE"
+	}, {
+		id: "PE",
+		name: "Pernambuco",
+		capital: "Recife",
+		region: "NE"
+	}, {
+		id: "PI",
+		name: "Piauí",
+		capital: "Teresina",
+		region: "NE"
+	}, {
+		id: "PR",
+		name: "Paraná",
+		capital: "Curitiba",
+		region: "S"
+	}, {
+		id: "RJ",
+		name: "Rio de Janeiro",
+		capital: "Rio de Janeiro",
+		region: "SE"
+	}, {
+		id: "RN",
+		name: "Rio Grande do Norte",
+		capital: "Natal",
+		region: "NE"
+	}, {
+		id: "RO",
+		name: "Rondônia",
+		capital: "Porto Velho",
+		region: "N"
+	}, {
+		id: "RR",
+		name: "Roraima",
+		capital: "Boa Vista",
+		region: "N"
+	}, {
+		id: "RS",
+		name: "Rio Grande do Sul",
+		capital: "Porto Alegre",
+		region: "S"
+	}, {
+		id: "SC",
+		name: "Santa Catarina",
+		capital: "Florianópolis",
+		region: "S"
+	}, {
+		id: "SE",
+		name: "Sergipe",
+		capital: "Aracaju",
+		region: "NE"
+	}, {
+		id: "SP",
+		name: "São Paulo",
+		capital: "São Paulo",
+		region: "SE"
+	}, {
+		id: "TO",
+		name: "Tocantins",
+		capital: "Palmas",
+		region: "N"
+	}]);
+	
+	module.factory( "brValidate", function() {
+		var brvalidate = {};
+		
+		// Regexes CPF
+		var cpfPunctuation = /[\.\-]/g;
+		var cpfPlain = /^\d{11}$/;
+		
+		// Regexes CNPJ
+		var cnpjPunctuation = /[\.\-\/]/g;
+		var cnpjPlain = /^\d{14}$/;
+		
+		brvalidate.cpf = function( cpf ) {
+			var sumDV, modDV, valDV;
+			
+			// Converte pra se for passado um Number
+			cpf = String( cpf ).trim();
+			
+			// Remove as pontuações permitidas
+			cpf = cpf.replace( cpfPunctuation, "" );
+			
+			// Valida o CPF plano e retorna false caso não seja válido
+			if ( !cpfPlain.test( cpf ) ) {
+				return false;
+			}
+			
+			// Transforma em array pra facilitar manipulação
+			cpf = cpf.split( "" );
+			
+			// Faz a soma dos primeiros 9 dígitos com peso aplicado
+			sumDV = cpf.slice( 0, 9 ).reduce(function( prev, char, i ) {
+				return prev + ( 10 - i ) * +char;
+			}, 0 );
+			
+			// Faz a divisão e guarda o resto da mesma
+			modDV = sumDV % 11;
+			
+			// Calcula o valor que o dígito verificador deve ter
+			valDV = modDV < 2 ? 0 : 11 - modDV;
+			
+			// Valida o valor do primeiro dígito verificador
+			if ( +cpf[ 9 ] !== valDV ) {
+				return false;
+			}
+			
+			// Faz a soma dos primeiros 10 dígitos com peso aplicado
+			sumDV = cpf.slice( 0, 10 ).reduce(function( prev, char, i ) {
+				return prev + ( 11 - i ) * +char;
+			}, 0 );
+			
+			// Faz a divisão e guarda o resto da mesma
+			modDV = sumDV % 11;
+			
+			// Calcula o valor que o dígito verificador deve ter
+			valDV = modDV < 2 ? 0 : 11 - modDV;
+			
+			// Retorna a validade do CPF.
+			return +cpf[ 10 ] === valDV;
+		};
+		
+		brvalidate.cnpj = function( cnpj ) {
+			var sumDV, modDV, valDV;
+			
+			// Converte pra String, caso tenha sido passado um Number
+			cnpj = String( cnpj ).trim();
+			
+			// Remove as pontuações permitidas
+			cnpj = cnpj.replace( cnpjPunctuation, "" );
+			
+			// Valida o CNPJ plano e retorna false caso não seja válido
+			if ( !cnpjPlain.test( cnpj ) ) {
+				return false;
+			}
+			
+			// Transforma em array pra facilitar manipulação
+			cnpj = cnpj.split( "" );
+			
+			// Faz a soma dos primeiros 12 dígitos com peso aplicado
+			sumDV = cnpj.slice( 0, 12 ).reduce(function( prev, char, i ) {
+				var weight = i < 4 ? 5 - i : 9 - ( i - 4 );
+				return prev + weight * +char;
+			}, 0 );
+			
+			// Faz a divisão e guarda o resto da mesma
+			modDV = sumDV % 11;
+			
+			// Calcula o valor que o dígito verificador deve ter
+			valDV = modDV < 2 ? 0 : 11 - modDV;
+			
+			// Valida o valor do primeiro dígito verificador
+			if ( +cnpj[ 12 ] !== valDV ) {
+				return false;
+			}
+			
+			// Faz a soma dos primeiros 13 dígitos com peso aplicado
+			sumDV = cnpj.slice( 0, 13 ).reduce(function( prev, char, i ) {
+				var weight = i < 5 ? 6 - i : 9 - ( i - 5 );
+				return prev + weight * +char;
+			}, 0 );
+			
+			// Faz a divisão e guarda o resto da mesma
+			modDV = sumDV % 11;
+			
+			// Calcula o valor que o dígito verificador deve ter
+			valDV = modDV < 2 ? 0 : 11 - modDV;
+			
+			// Retorna a validade do CPF.
+			return +cnpj[ 13 ] === valDV;
+		};
+		
+		return brvalidate;
+	});
+	
+}( angular );

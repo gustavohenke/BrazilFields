@@ -15,6 +15,7 @@ module.exports = function( config ) {
 			"libs/chai/chai.js",
 			
 			// Sources
+			"src/brazilfields.js",
 			"src/*.js",
 			
 			// Specs
