@@ -3,7 +3,144 @@
 	
 	var module = ng.module( "brazilfields.utils", [] );
 
-	module.factory( "brValidate", function() {
+	module.constant( "brStates", [{
+		id: "AC",
+		name: "Acre",
+		capital: "Rio Branco",
+		region: "N"
+	}, {
+		id: "AL",
+		name: "Alagoas",
+		capital: "Maceió",
+		region: "NE"
+	}, {
+		id: "AM",
+		name: "Amazonas",
+		capital: "Manaus",
+		region: "N"
+	}, {
+		id: "AP",
+		name: "Amapá",
+		capital: "Macapá",
+		region: "N"
+	}, {
+		id: "BA",
+		name: "Bahia",
+		capital: "Salvador",
+		region: "NE"
+	}, {
+		id: "CE",
+		name: "Ceará",
+		capital: "Fortaleza",
+		region: "NE"
+	}, {
+		id: "DF",
+		name: "Distrito Federal",
+		capital: "Brasília",
+		region: "CO"
+	}, {
+		id: "ES",
+		name: "Espírito Santo",
+		capital: "Vitória",
+		region: "SE"
+	}, {
+		id: "GO",
+		name: "Goiás",
+		capital: "Goiânia",
+		region: "CO"
+	}, {
+		id: "MA",
+		name: "Maranhão",
+		capital: "São Luís",
+		region: "NE"
+	}, {
+		id: "MG",
+		name: "Minas Gerais",
+		capital: "Belo Horizonte",
+		region: "SE"
+	}, {
+		id: "MS",
+		name: "Mato Grosso do Sul",
+		capital: "Campo Grande",
+		region: "CO"
+	}, {
+		id: "MT",
+		name: "Mato Grosso",
+		capital: "Cuiabá",
+		region: "CO"
+	}, {
+		id: "PA",
+		name: "Pará",
+		capital: "Belém",
+		region: "N"
+	}, {
+		id: "PB",
+		name: "Paraíba",
+		capital: "João Pessoa",
+		region: "NE"
+	}, {
+		id: "PE",
+		name: "Pernambuco",
+		capital: "Recife",
+		region: "NE"
+	}, {
+		id: "PI",
+		name: "Piauí",
+		capital: "Teresina",
+		region: "NE"
+	}, {
+		id: "PR",
+		name: "Paraná",
+		capital: "Curitiba",
+		region: "S"
+	}, {
+		id: "RJ",
+		name: "Rio de Janeiro",
+		capital: "Rio de Janeiro",
+		region: "SE"
+	}, {
+		id: "RN",
+		name: "Rio Grande do Norte",
+		capital: "Natal",
+		region: "NE"
+	}, {
+		id: "RO",
+		name: "Rondônia",
+		capital: "Porto Velho",
+		region: "N"
+	}, {
+		id: "RR",
+		name: "Roraima",
+		capital: "Boa Vista",
+		region: "N"
+	}, {
+		id: "RS",
+		name: "Rio Grande do Sul",
+		capital: "Porto Alegre",
+		region: "S"
+	}, {
+		id: "SC",
+		name: "Santa Catarina",
+		capital: "Florianópolis",
+		region: "S"
+	}, {
+		id: "SE",
+		name: "Sergipe",
+		capital: "Aracaju",
+		region: "NE"
+	}, {
+		id: "SP",
+		name: "São Paulo",
+		capital: "São Paulo",
+		region: "SE"
+	}, {
+		id: "TO",
+		name: "Tocantins",
+		capital: "Palmas",
+		region: "N"
+	}]);
+	
+	module.factory( "brValidate", [ "brStates", function( brStates ) {
 		var brvalidate = {};
 		
 		// Regexes CPF
@@ -13,6 +150,35 @@
 		// Regexes CNPJ
 		var cnpjPunctuation = /[\.\-\/]/g;
 		var cnpjPlain = /^\d{14}$/;
+		
+		// Remoção de acentuação
+		var removeAccents = function( str ) {
+			if ( typeof str !== "string" ) {
+				return str;
+			}
+			
+			return removeAccents.replaces.reduce(function( prev, tuple ) {
+				return prev.replace( tuple[ 0 ], tuple[ 1 ] );
+			}, str );
+		};
+		removeAccents.replaces = [
+			[ /[\300-\306]/g, "A" ],
+			[ /[\340-\346]/g, "a" ],
+			[ /[\310-\313]/g, "E" ],
+			[ /[\350-\353]/g, "e" ],
+			[ /[\314-\317]/g, "I" ],
+			[ /[\354-\357]/g, "i" ],
+			[ /[\322-\330]/g, "O" ],
+			[ /[\362-\370]/g, "o" ],
+			[ /[\331-\334]/g, "U" ],
+			[ /[\371-\374]/g, "u" ],
+			[ /[\321]/g, "N" ],
+			[ /[\361]/g, "n" ],
+			[ /[\307]/g, "C" ],
+			[ /[\347]/g, "c" ]
+		];
+		
+		// -----------------------------------------------------------------------------------------
 		
 		brvalidate.cpf = function( cpf ) {
 			var sumDV, modDV, valDV;
@@ -112,7 +278,16 @@
 			return +cnpj[ 13 ] === valDV;
 		};
 		
+		brvalidate.state = function( val ) {
+			val = removeAccents( val ).toUpperCase();
+			
+			return brStates.some(function( state ) {
+				var name = removeAccents( state.name ).toUpperCase();
+				return state.id === val || name === val;
+			});
+		};
+		
 		return brvalidate;
-	});
+	}]);
 	
 }( angular );

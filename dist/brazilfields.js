@@ -200,7 +200,7 @@
 		region: "N"
 	}]);
 	
-	module.factory( "brValidate", function() {
+	module.factory( "brValidate", [ "brStates", function( brStates ) {
 		var brvalidate = {};
 		
 		// Regexes CPF
@@ -210,6 +210,35 @@
 		// Regexes CNPJ
 		var cnpjPunctuation = /[\.\-\/]/g;
 		var cnpjPlain = /^\d{14}$/;
+		
+		// Remoção de acentuação
+		var removeAccents = function( str ) {
+			if ( typeof str !== "string" ) {
+				return str;
+			}
+			
+			return removeAccents.replaces.reduce(function( prev, tuple ) {
+				return prev.replace( tuple[ 0 ], tuple[ 1 ] );
+			}, str );
+		};
+		removeAccents.replaces = [
+			[ /[\300-\306]/g, "A" ],
+			[ /[\340-\346]/g, "a" ],
+			[ /[\310-\313]/g, "E" ],
+			[ /[\350-\353]/g, "e" ],
+			[ /[\314-\317]/g, "I" ],
+			[ /[\354-\357]/g, "i" ],
+			[ /[\322-\330]/g, "O" ],
+			[ /[\362-\370]/g, "o" ],
+			[ /[\331-\334]/g, "U" ],
+			[ /[\371-\374]/g, "u" ],
+			[ /[\321]/g, "N" ],
+			[ /[\361]/g, "n" ],
+			[ /[\307]/g, "C" ],
+			[ /[\347]/g, "c" ]
+		];
+		
+		// -----------------------------------------------------------------------------------------
 		
 		brvalidate.cpf = function( cpf ) {
 			var sumDV, modDV, valDV;
@@ -309,7 +338,16 @@
 			return +cnpj[ 13 ] === valDV;
 		};
 		
+		brvalidate.state = function( val ) {
+			val = removeAccents( val ).toUpperCase();
+			
+			return brStates.some(function( state ) {
+				var name = removeAccents( state.name ).toUpperCase();
+				return state.id === val || name === val;
+			});
+		};
+		
 		return brvalidate;
-	});
+	}]);
 	
 }( angular );
