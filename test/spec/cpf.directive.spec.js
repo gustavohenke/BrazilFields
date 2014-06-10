@@ -27,7 +27,7 @@ describe( "brCpf Directive", function() {
 			expect( ngModel.$error.cpf ).to.not.be.ok;
 		});
 		
-		it( "deve setar a validação 'cpf' como válida quando valor é CPF válido", function() {
+		it( "deve setar a validação 'cpf' como válida quando valor é CPF inválido", function() {
 			input.val( "20620614813" ).triggerHandler( "input" );
 			scope.$apply();
 	
@@ -43,7 +43,7 @@ describe( "brCpf Directive", function() {
 			expect( ngModel.$error.cpf ).to.not.be.ok;
 		});
 		
-		it( "deve setar a validação 'cpf' como válida quando valor é CPF válido", function() {
+		it( "deve setar a validação 'cpf' como válida quando valor é CPF inválido", function() {
 			scope.foo = "20620614813";
 			scope.$apply();
 	
