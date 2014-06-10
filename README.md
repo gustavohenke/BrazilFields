@@ -1,2 +1,2 @@
-# BrazilFields
+# BrazilFields [![Build Status](https://travis-ci.org/gustavohenke/BrazilFields.png?branch=master)](https://travis-ci.org/gustavohenke/BrazilFields)
 Conjunto de utilidades Angular.js para documentos brasileiros.
