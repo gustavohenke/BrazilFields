@@ -17,6 +17,7 @@
 	"peerDependencies": {
 		"grunt": "~0.4.2"
 	},
+	"homepage": "https://github.com/gustavohenke/BrazilFields",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/gustavohenke/BrazilFields.git"
