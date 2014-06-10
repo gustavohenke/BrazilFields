@@ -3,7 +3,8 @@
 	
 	var br = ng.module( "brazilfields", [
 		"brazilfields.utils",
-		"brazilfields.cpfCnpj"
+		"brazilfields.cpfCnpj",
+		"brazilfields.states"
 	]);
 	
 }( angular );
