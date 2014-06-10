@@ -13,7 +13,7 @@
 		};
 		
 		return function( scope, element, attr ) {
-			var selects = element.parent().querySelectorAll( "> select" );
+			var selects = element.parent().find( "select" );
 			var isSelect = [].some.call( selects, function( elem ) {
 				return elem === element[ 0 ];
 			});
