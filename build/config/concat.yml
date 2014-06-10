@@ -1,5 +1,0 @@
-core:
-  src:
-    - src/brazilfields.js
-    - src/*.js
-  dest: dist/brazilfields.js

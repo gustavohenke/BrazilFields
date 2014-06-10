@@ -7,3 +7,9 @@ core:
     - "test/**/*"
   tasks:
     - test
+    
+banner:
+  files:
+    - build/banner.txt
+  tasks:
+    - package
