@@ -67,4 +67,21 @@ describe( "brValidate Service", function() {
 			expect( brValidate.cnpj( "  06439677000107	" ) ).to.be.ok;
 		});
 	});
+	
+	describe( "state", function() {
+		it( "deve validar estado pelo ID (sigla) ou nome", function() {
+			// Existentes
+			expect( brValidate.state( "AC" ) ).to.be.ok;
+			expect( brValidate.state( "Paraná" ) ).to.be.ok;
+			
+			// Inexistentes
+			expect( brValidate.state( "Inexistente" ) ).to.not.be.ok;
+			expect( brValidate.state( "XX" ) ).to.not.be.ok;
+		});
+		
+		it( "deve ignorar acentuação ou case", function() {
+			expect( brValidate.state( "rs" ) ).to.be.ok;
+			expect( brValidate.state( "SAo PAulO" ) ).to.be.ok;
+		});
+	});
 });
