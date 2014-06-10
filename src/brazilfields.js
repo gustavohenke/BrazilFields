@@ -114,5 +114,37 @@
 		
 		return brvalidate;
 	});
-
+	
+	// Dinamicamente gera as diretivas
+	[ "cpf", "cnpj" ].forEach(function( type ) {
+		var name = "br" + type[ 0 ].toUpperCase() + type.substr( 1 );
+		
+		br.directive( name, [ "brValidate", function( brValidate ) {
+			var definition = {};
+			
+			definition.require = "?ngModel";
+			definition.link = function( scope, element, attrs, ngModel ) {
+				var validator = function( value ) {
+					var valid;
+					var mustValidate = scope.$eval( attrs[ name ] );
+					
+					if ( !mustValidate ) {
+						return value;
+					}
+					
+					valid = brValidate[ type ]( value );
+					ngModel.$setValidity( type, valid );
+					
+					return valid ? value : undefined;
+				};
+				
+				// Adiciona as funções de validação dos 2 lados
+				ngModel.$parsers.push( validator );
+				ngModel.$formatters.push( validator );
+			};
+			
+			return definition;
+		}]);
+	});
+	
 }( angular );
