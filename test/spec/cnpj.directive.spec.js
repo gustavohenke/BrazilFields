@@ -19,6 +19,13 @@ describe( "brCnpj Directive", function() {
 		expect( ngModel.$error.cnpj ).to.be.undefined;
 	});
 	
+	it( "deve ignorar quando um valor vazio for passado", function() {
+		input.val( "" ).triggerHandler( "input" );
+		scope.$apply();
+		
+		expect( ngModel.$error.cpf ).to.notbe.ok;
+	});
+	
 	describe( "da view para o model", function() {
 		it( "deve setar a validação 'cnpj' como válida quando valor é CNPJ válido", function() {
 			input.val( "06439677000107" ).triggerHandler( "input" );

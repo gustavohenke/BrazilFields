@@ -19,6 +19,13 @@ describe( "brCpf Directive", function() {
 		expect( ngModel.$error.cpf ).to.be.undefined;
 	});
 	
+	it( "deve ignorar quando um valor vazio for passado", function() {
+		input.val( "" ).triggerHandler( "input" );
+		scope.$apply();
+		
+		expect( ngModel.$error.cpf ).to.notbe.ok;
+	});
+	
 	describe( "da view para o model", function() {
 		it( "deve setar a validação 'cpf' como válida quando valor é CPF válido", function() {
 			input.val( "20620614803" ).triggerHandler( "input" );
