@@ -1,12 +1,15 @@
 describe( "brCnpj Directive", function() {
 	"use strict";
 	
-	var scope, input, ngModel;
+	var scope, $compile, input, ngModel;
+	var $ = angular.element;
 	var expect = chai.expect;
 	
 	beforeEach( module( "brazilfields.cpfCnpj" ) );
-	beforeEach( inject(function( $rootScope, $compile ) {
+	beforeEach( inject(function( $injector, $rootScope ) {
 		scope = $rootScope;
+		$compile = $injector.get( "$compile" );
+		
 		input = $compile( "<input type='text' ng-model='foo' br-cnpj>" )( scope );
 		ngModel = input.controller( "ngModel" );
 	}));
@@ -32,6 +35,26 @@ describe( "brCnpj Directive", function() {
 		scope.$apply();
 		
 		expect( ngModel.$error.cpf ).to.not.be.ok;
+	});
+	
+	it( "#1 - deve validar corretamente junto com ui-mask", function() {
+		var ngModel;
+		var masked = $( "<input type='text' ng-model='foo' br-cnpj>" );
+		masked = $compile( masked.attr( "ui-mask", "99.999.999/9999-99" ) )( scope );
+		
+		ngModel = masked.controller( "ngModel" );
+		
+		// Válido
+		masked.val( "06439677000107" ).triggerHandler( "input" );
+		scope.$apply();
+		
+		expect( ngModel.$error.cnpj ).to.not.be.ok;
+		
+		// Inválido
+		masked.val( "06439677000117" ).triggerHandler( "input" );
+		scope.$apply();
+		
+		expect( ngModel.$error.cnpj ).to.be.ok;
 	});
 	
 	describe( "da view para o model", function() {

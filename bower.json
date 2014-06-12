@@ -6,7 +6,8 @@
 	},
 	"devDependencies": {
 		"angular-mocks": "~1.2.10",
-		"chai": "~1.9.1"
+		"chai": "~1.9.1",
+		"angular-ui-utils": "~0.1.1"
 	},
 	"ignore": [
 		"build/",

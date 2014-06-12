@@ -13,6 +13,7 @@ module.exports = function( config ) {
 			"libs/angular/angular.js",
 			"libs/angular-mocks/angular-mocks.js",
 			"libs/chai/chai.js",
+			"libs/angular-ui-utils/ui-utils.js",
 			
 			// Sources
 			"src/brazilfields.js",

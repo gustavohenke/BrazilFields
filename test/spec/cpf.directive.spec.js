@@ -1,12 +1,15 @@
 describe( "brCpf Directive", function() {
 	"use strict";
 	
-	var scope, input, ngModel;
+	var scope, $compile, input, ngModel;
+	var $ = angular.element;
 	var expect = chai.expect;
 	
 	beforeEach( module( "brazilfields.cpfCnpj" ) );
-	beforeEach( inject(function( $rootScope, $compile ) {
+	beforeEach( inject(function( $injector, $rootScope ) {
 		scope = $rootScope;
+		$compile = $injector.get( "$compile" );
+		
 		input = $compile( "<input type='text' ng-model='foo' br-cpf>" )( scope );
 		ngModel = input.controller( "ngModel" );
 	}));
@@ -32,6 +35,26 @@ describe( "brCpf Directive", function() {
 		scope.$apply();
 		
 		expect( ngModel.$error.cpf ).to.not.be.ok;
+	});
+	
+	it( "#1 - deve validar corretamente junto com ui-mask", function() {
+		var ngModel;
+		var masked = $( "<input type='text' ng-model='foo' br-cpf>" );
+		masked = $compile( masked.attr( "ui-mask", "999.999.999-99" ) )( scope );
+		
+		ngModel = masked.controller( "ngModel" );
+		
+		// Válido
+		masked.val( "20620614803" ).triggerHandler( "input" );
+		scope.$apply();
+		
+		expect( ngModel.$error.cpf ).to.not.be.ok;
+		
+		// Inválido
+		masked.val( "20620614813" ).triggerHandler( "input" );
+		scope.$apply();
+		
+		expect( ngModel.$error.cpf ).to.be.ok;
 	});
 	
 	describe( "da view para o model", function() {

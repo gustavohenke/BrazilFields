@@ -12,6 +12,7 @@
 		module.directive( name, [ "brValidate", function( brValidate ) {
 			var definition = {};
 			
+			definition.priority = 500;
 			definition.require = "ngModel";
 			definition.link = function( scope, element, attrs, ngModel ) {
 				var validator = function( value ) {
