@@ -24,15 +24,15 @@
 					var mustValidate = ( attr || "" ).trim() ? !!scope.$eval( attr ) : true;
 					mustValidate &= !!( value || "" ).trim();
 					
-					if ( !mustValidate ) {
-						// Remove a chave de validação atual, se não é pra validar
-						delete ngModel.$error[ type ];
-						return value;
+					if ( mustValidate ) {
+						// Roda o algoritmo de validação
+						valid = brValidate[ type ]( value );
+					} else {
+						// Se não é pra validar, seta como válido apenas.
+						valid = true;
 					}
 					
-					valid = brValidate[ type ]( value );
 					ngModel.$setValidity( type, valid );
-					
 					return valid ? value : undefined;
 				};
 				

@@ -24,7 +24,7 @@ describe( "brCpf Directive", function() {
 		input.val( "20620614813" ).triggerHandler( "input" );
 		scope.$apply();
 
-		expect( ngModel.$error.cpf ).to.be.undefined;
+		expect( ngModel.$error.cpf ).to.not.be.ok;
 	});
 	
 	it( "deve ignorar quando um valor vazio for passado", function() {

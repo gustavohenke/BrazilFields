@@ -24,7 +24,7 @@ describe( "brCnpj Directive", function() {
 		input.val( "06439677000107" ).triggerHandler( "input" );
 		scope.$apply();
 
-		expect( ngModel.$error.cnpj ).to.be.undefined;
+		expect( ngModel.$error.cnpj ).to.not.be.ok;
 	});
 	
 	it( "deve ignorar quando um valor vazio for passado", function() {
