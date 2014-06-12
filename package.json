@@ -4,6 +4,7 @@
 	"version": "0.0.2",
 	"dependencies": {},
 	"devDependencies": {
+		"grunt-bump": "~0.0.14",
 		"grunt-cli": "~0.1.13",
 		"grunt-contrib-concat": "~0.4.0",
 		"grunt-contrib-watch": "~0.6.1",

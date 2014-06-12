@@ -1,0 +1,16 @@
+options:
+  files:
+    - package.json
+    - bower.json
+  updateConfig:
+    - package
+  commit: true
+  commitMessage: "chore(release): versão %VERSION%"
+  commitFiles:
+    - package.json
+    - bower.json
+    - dist/*
+  tagName: "%VERSION%"
+  tagMessage: "Versão %VERSION%"
+  push: true
+  pushTo: "origin"

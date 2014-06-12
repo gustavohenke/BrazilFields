@@ -4,6 +4,12 @@ package:
 test:
   - karma:core
   
+publish:
+  - test
+  - bump-only
+  - package
+  - bump-commit
+  
 default:
   - test
   - package
