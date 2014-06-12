@@ -6,3 +6,15 @@ node_js:
 before_install:
 - npm install -g bower
 - bower install
+
+env:
+  global:
+    # NPM_KEY
+    - secure: NFJcV6b+3/Vjb6A7Bcs0qUtjDGONwNNgd697vInxLiaYVjSxThWtForKSP0GseBRMBSR/FPm1S1Jm3W9ItT1k8cxVPD6v5AUGsK6La7HghwHS4i83M47FGHmhe08zajI1Qzd+9JitNUB2UZgeMwEtNx+EgvZAxqXwR+Zc/pDssc=
+    
+deploy:
+  provider: npm
+  email: "gustavo@injoin.com.br"
+  api_key: "${NPM_KEY}"
+  on:
+    tags: true
