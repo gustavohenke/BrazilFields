@@ -23,7 +23,7 @@ describe( "brCpf Directive", function() {
 		input.val( "" ).triggerHandler( "input" );
 		scope.$apply();
 		
-		expect( ngModel.$error.cpf ).to.notbe.ok;
+		expect( ngModel.$error.cpf ).to.not.be.ok;
 	});
 	
 	describe( "da view para o model", function() {
