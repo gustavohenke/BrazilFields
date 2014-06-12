@@ -1,7 +1,7 @@
 {
 	"name": "brazilfields",
 	"description": "Conjunto de utilidades Angular.js para documentos brasileiros.",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"dependencies": {},
 	"devDependencies": {
 		"grunt-bump": "~0.0.14",
