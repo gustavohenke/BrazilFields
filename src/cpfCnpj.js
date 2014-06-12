@@ -12,7 +12,7 @@
 		module.directive( name, [ "brValidate", function( brValidate ) {
 			var definition = {};
 			
-			definition.require = "?ngModel";
+			definition.require = "ngModel";
 			definition.link = function( scope, element, attrs, ngModel ) {
 				var validator = function( value ) {
 					var valid;
@@ -35,11 +35,6 @@
 					
 					return valid ? value : undefined;
 				};
-				
-				// Sem ng-model, não faz nada.
-				if ( !ngModel ) {
-					return;
-				}
 				
 				// Adiciona as funções de validação dos 2 lados
 				ngModel.$parsers.push( validator );
