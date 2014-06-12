@@ -21,8 +21,8 @@
 					// Deve validar quando o atributo não tem valor ou o seu valor (como uma
 					// expressão do Angular) retorna um valor truthy
 					// Também é levado em conta se há um valor na directive ngModel
-					var mustValidate = ( attr || "" ).trim() ? scope.$eval( attr ) : true;
-					mustValidate &= ( value || "" ).trim();
+					var mustValidate = ( attr || "" ).trim() ? !!scope.$eval( attr ) : true;
+					mustValidate &= !!( value || "" ).trim();
 					
 					if ( !mustValidate ) {
 						// Remove a chave de validação atual, se não é pra validar

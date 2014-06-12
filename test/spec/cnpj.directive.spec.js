@@ -11,6 +11,14 @@ describe( "brCnpj Directive", function() {
 		ngModel = input.controller( "ngModel" );
 	}));
 	
+	it( "deve validar se o valor do atributo retorna true", function() {
+		input.attr( "br-cnpj", "true" );
+		input.val( "__.___.___/____-__" ).triggerHandler( "input" );
+		scope.$apply();
+
+		expect( ngModel.$error.cnpj ).to.be.ok;
+	});
+	
 	it( "não deve validar se o valor do atributo retorna false", function() {
 		input.attr( "br-cnpj", "false" );
 		input.val( "06439677000107" ).triggerHandler( "input" );

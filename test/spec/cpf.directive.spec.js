@@ -11,6 +11,14 @@ describe( "brCpf Directive", function() {
 		ngModel = input.controller( "ngModel" );
 	}));
 	
+	it( "deve validar se o valor do atributo retorna true", function() {
+		input.attr( "br-cpf", "true" );
+		input.val( "___.___.___-__" ).triggerHandler( "input" );
+		scope.$apply();
+
+		expect( ngModel.$error.cpf ).to.be.ok;
+	});
+	
 	it( "não deve validar se o valor do atributo retorna false", function() {
 		input.attr( "br-cpf", "false" );
 		input.val( "20620614813" ).triggerHandler( "input" );
