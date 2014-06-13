@@ -1,5 +1,5 @@
 /*!
- * brazilfields v0.0.2
+ * brazilfields v0.0.3
  * Conjunto de utilidades Angular.js para documentos brasileiros.
  *
  * https://github.com/gustavohenke/BrazilFields
@@ -28,7 +28,8 @@
 		module.directive( name, [ "brValidate", function( brValidate ) {
 			var definition = {};
 			
-			definition.require = "?ngModel";
+			definition.priority = 500;
+			definition.require = "ngModel";
 			definition.link = function( scope, element, attrs, ngModel ) {
 				var validator = function( value ) {
 					var valid;
@@ -40,22 +41,17 @@
 					var mustValidate = ( attr || "" ).trim() ? !!scope.$eval( attr ) : true;
 					mustValidate &= !!( value || "" ).trim();
 					
-					if ( !mustValidate ) {
-						// Remove a chave de validação atual, se não é pra validar
-						delete ngModel.$error[ type ];
-						return value;
+					if ( mustValidate ) {
+						// Roda o algoritmo de validação
+						valid = brValidate[ type ]( value );
+					} else {
+						// Se não é pra validar, seta como válido apenas.
+						valid = true;
 					}
 					
-					valid = brValidate[ type ]( value );
 					ngModel.$setValidity( type, valid );
-					
 					return valid ? value : undefined;
 				};
-				
-				// Sem ng-model, não faz nada.
-				if ( !ngModel ) {
-					return;
-				}
 				
 				// Adiciona as funções de validação dos 2 lados
 				ngModel.$parsers.push( validator );
