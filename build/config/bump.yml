@@ -2,7 +2,7 @@ options:
   files:
     - package.json
     - bower.json
-  updateConfig:
+  updateConfigs:
     - package
   commit: true
   commitMessage: "chore(release): versão %VERSION%"
