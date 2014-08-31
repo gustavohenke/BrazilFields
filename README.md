@@ -1,4 +1,4 @@
-# BrazilFields [![Build Status](https://travis-ci.org/gustavohenke/BrazilFields.png?branch=master)](https://travis-ci.org/gustavohenke/BrazilFields)
+# BrazilFields [![Build Status](http://img.shields.io/travis/gustavohenke/BrazilFields.svg?style=flat-square)](https://travis-ci.org/gustavohenke/BrazilFields)
 Conjunto de utilidades Angular.js para documentos brasileiros.
 
 ## Instalação
