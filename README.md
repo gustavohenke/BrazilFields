@@ -96,3 +96,6 @@ Exemplo:
   <p ng-show="form.cnpj.$error.cnpj">Digite um CNPJ válido!</p>
 </form>
 ```
+
+## Licença
+MIT &copy; Gustavo Henke
