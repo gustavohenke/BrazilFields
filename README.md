@@ -70,3 +70,29 @@ app.controller( "MeuController", [ "$scope", "brValidate", function( $scope, brV
     brValidate.state( "Foobar" ); // => false, estado inexistente
 }]);
 ```
+
+### Diretivas
+
+#### br-cpf
+Valida um campo de CPF com `ng-model` e define a chave de validação `cpf` quando o mesmo estiver inválido.
+
+Exemplo:
+
+```html
+<form name="form">
+  <input type="text" name="cpf" ng-model="cpf" br-cpf>
+  <p ng-show="form.cpf.$error.cpf">Digite um CPF válido!</p>
+</form>
+```
+
+#### br-cnpj
+Valida um campo de CNPJ com `ng-model` e define a chave de validação `cnpj` quando o mesmo estiver inválido.
+
+Exemplo:
+
+```html
+<form name="form">
+  <input type="text" name="cnpj" ng-model="cnpj" br-cnpj>
+  <p ng-show="form.cnpj.$error.cnpj">Digite um CNPJ válido!</p>
+</form>
+```
