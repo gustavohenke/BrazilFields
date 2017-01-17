@@ -1,7 +1,7 @@
 {
   "name": "brazilfields",
   "description": "Conjunto de utilidades Angular.js para documentos brasileiros.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {
     "angular": "~1.2.32"
   },

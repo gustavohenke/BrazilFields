@@ -1,5 +1,5 @@
 /*!
- * brazilfields v0.0.4
+ * brazilfields v0.1.1
  * Conjunto de utilidades Angular.js para documentos brasileiros.
  *
  * https://github.com/gustavohenke/BrazilFields
