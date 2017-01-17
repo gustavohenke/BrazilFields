@@ -1,11 +1,6 @@
 language: node_js
 node_js:
-- "0.10"
-
-# Instala o Bower e dependências Bower
-before_install:
-- npm install -g bower
-- bower install
+- "7"
 
 env:
   global:
@@ -14,7 +9,7 @@ env:
     
 deploy:
   provider: npm
-  email: "gustavo@injoin.com.br"
+  email: "guhenke@gmail.com"
   api_key: "${NPM_KEY}"
   on:
     tags: true
